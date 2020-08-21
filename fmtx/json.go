@@ -6,6 +6,7 @@ import (
 	jsoniter "github.com/json-iterator/go"
 )
 
+// JSONPrettySPrint return indented json
 func JSONPrettySPrint(p interface{}) (string, error) {
 	json, err := jsoniter.MarshalIndent(p, "", "    ")
 	if err != nil {
@@ -15,6 +16,7 @@ func JSONPrettySPrint(p interface{}) (string, error) {
 	return fmt.Sprintf("%s", json), nil
 }
 
+// JSONPrettyPrint print indented json
 func JSONPrettyPrint(p interface{}) {
 	json, err := JSONPrettySPrint(p)
 	if err != nil {
