@@ -13,8 +13,8 @@
 package main
 
 import (
-    "github.com/petabytecl/x/pkg/errorsx"
-    "github.com/petabytecl/x/pkg/fmtx"
+    "github.com/petabytecl/x/errorsx"
+    "github.com/petabytecl/x/fmtx"
 )
 
 func main() {
