@@ -21,3 +21,47 @@ func main() {
     fmtx.JSONPrettyPrint(errorsx.ErrInternalServerError)
 }
 ```
+
+```go
+package main
+
+import (
+  "fmt"
+  "log"
+  "net/http"
+
+  "github.com/julienschmidt/httprouter"
+  "github.com/petabytecl/x/oidcx"
+)
+
+const (
+  oauthClientID     = "google-client-id"
+  oauthClientSecret = "google-client-secret"
+)
+
+func main() {
+  p, err := oidcx.NewProvider(oauthClientID, oidcx.IssuerGoogle)
+  if err != nil {
+    fmt.Printf("%s\n", err.Error())
+  }
+
+  handler := p.NewOAuth2Handler(
+    p.NewOAuth2Config(
+      oauthClientSecret,
+      googleCallbackURL,
+      []string{
+        "openid",
+        "https://www.googleapis.com/auth/userinfo.profile",
+        "https://www.googleapis.com/auth/userinfo.email",
+      },
+    ),
+  )
+
+  fmt.Printf("%s\n", handler.AuthCodeURL())
+
+  r := httprouter.New()
+  r.Handler("GET", "/auth/google/callback", handler)
+
+  log.Fatal(http.ListenAndServe(":5000", r))
+}
+```
