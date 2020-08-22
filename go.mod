@@ -7,7 +7,6 @@ require (
 	emperror.dev/errors v0.7.0
 	github.com/coreos/go-oidc v2.2.1+incompatible
 	github.com/json-iterator/go v1.1.10
-	github.com/julienschmidt/httprouter v1.3.0
 	github.com/opentracing/opentracing-go v1.2.0
 	github.com/pkg/errors v0.9.0
 	github.com/pquerna/cachecontrol v0.0.0-20200819021114-67c6ae64274f // indirect
