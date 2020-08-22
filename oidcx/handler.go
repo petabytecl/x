@@ -19,10 +19,11 @@ type OAuth2Handler struct {
 	verifier *oidc.IDTokenVerifier
 	state    string
 
-	IDToken     *oidc.IDToken
-	IDClaims    *json.RawMessage
-	UserInfo    *oidc.UserInfo
-	OAuth2Token *oauth2.Token
+	IDToken        *oidc.IDToken
+	IDClaims       *json.RawMessage
+	UserInfo       *oidc.UserInfo
+	UserInfoClaims *json.RawMessage
+	OAuth2Token    *oauth2.Token
 }
 
 func (p *Provider) NewOAuth2Handler(c *oauth2.Config) *OAuth2Handler {
@@ -69,7 +70,6 @@ func (h *OAuth2Handler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 			h.IDToken = idToken
 
 			var idTokenClaims json.RawMessage
-
 			if err := idToken.Claims(&idTokenClaims); err != nil {
 				w.WriteHeader(http.StatusInternalServerError)
 				fmt.Println(err.Error())
@@ -87,6 +87,15 @@ func (h *OAuth2Handler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 			}
 
 			h.UserInfo = userInfo
+
+			var userInfoClaims json.RawMessage
+			if err := userInfo.Claims(&userInfo); err != nil {
+				w.WriteHeader(http.StatusInternalServerError)
+				fmt.Println(err.Error())
+				return
+			}
+
+			h.UserInfoClaims = &userInfoClaims
 		}
 	}
 

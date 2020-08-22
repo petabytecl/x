@@ -48,7 +48,7 @@ func main() {
   handler := p.NewOAuth2Handler(
     p.NewOAuth2Config(
       oauthClientSecret,
-      googleCallbackURL,
+      "http://localhost:5000/auth/google/callback",
       []string{
         "openid",
         "https://www.googleapis.com/auth/userinfo.profile",
