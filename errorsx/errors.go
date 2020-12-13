@@ -1,6 +1,6 @@
 package errorsx
 
-import "emperror.dev/errors"
+import "github.com/pkg/errors"
 
 // Cause returns the underlying cause of the error, if possible.
 // An error value has a cause if it implements the following
@@ -65,6 +65,7 @@ type DetailsCarrier interface {
 	Details() map[string]interface{}
 }
 
+// StackTracer can be implemented by an error to support errors stack trace.
 type StackTracer interface {
 	StackTrace() errors.StackTrace
 }
