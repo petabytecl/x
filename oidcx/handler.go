@@ -36,13 +36,6 @@ func (p *Provider) NewOAuth2Handler(c *oauth2.Config) *OAuth2Handler {
 	}
 }
 
-type authError struct {
-	Name        string
-	Description string
-	Hint        string
-	Debug       string
-}
-
 func (h *OAuth2Handler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	if len(r.URL.Query().Get("error")) > 0 {
 		fmt.Printf("auth request error: %s, desc: %s, hint: %s, debug: %s\n",
