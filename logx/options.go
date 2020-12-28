@@ -55,7 +55,7 @@ func (o *Options) BindFlags(fs *pflag.FlagSet) {
 	encVal.setFunc = func(fromFlag zapcore.Encoder) {
 		o.Encoder = fromFlag
 	}
-	fs.Var(&encVal, "log-encoder", "Log encoding ('json' or 'console')")
+	fs.Var(&encVal, "log-encoder", "Log encoding (one of 'json' or 'console')")
 
 	// Set the Log Level
 	var levelVal levelFlag
@@ -63,8 +63,8 @@ func (o *Options) BindFlags(fs *pflag.FlagSet) {
 		o.Level = fromFlag
 	}
 	fs.Var(&levelVal, "log-level",
-		"Log level to configure the verbosity of logging. Can be one of 'debug', 'info', 'error', "+
-			"'dpanic', 'panic', 'warn', 'fatal'")
+		"Log level to configure the verbosity of logging (one of 'debug', 'info', 'error', "+
+			"'dpanic', 'panic', 'warn' or 'fatal')")
 
 	// Set the StrackTrace Level
 	var stackVal stackTraceFlag
