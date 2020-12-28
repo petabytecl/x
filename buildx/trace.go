@@ -1,4 +1,4 @@
-package buildinfo
+package buildx
 
 import (
 	"contrib.go.opencensus.io/exporter/jaeger"

@@ -1,4 +1,4 @@
-package buildinfo
+package buildx
 
 import (
 	"net/http"
@@ -8,7 +8,6 @@ import (
 
 func (i Info) HTTPHandler() http.Handler {
 	var body []byte
-
 	body, _ = jsoniter.Marshal(i)
 
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {

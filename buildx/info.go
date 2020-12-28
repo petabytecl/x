@@ -1,16 +1,6 @@
-package buildinfo
+package buildx
 
 import "runtime"
-
-var (
-	Version    = "undefined"
-	Revision   = "undefined"
-	Branch     = "undefined"
-	Prerelease = "undefined"
-	IsSnapshot = "undefined"
-	BuildUser  = "undefined"
-	BuildDate  = "undefined"
-)
 
 // Info represents all available build information.
 type Info struct {
