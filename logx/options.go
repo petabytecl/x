@@ -47,9 +47,7 @@ type Opts func(*Options)
 func (o *Options) BindFlags(fs *pflag.FlagSet) {
 
 	// Set Development mode value
-	// fs.BoolVar(&o.Development, "zap-devel", false,
-	// 	"Development Mode defaults(encoder=consoleEncoder,logLevel=Debug,stackTraceLevel=Warn). "+
-	// 		"Production Mode defaults(encoder=jsonEncoder,logLevel=Info,stackTraceLevel=Error)")
+	fs.BoolVar(&o.Development, "debug", false, "Enable debug mode")
 
 	// Set Encoder value
 	var encVal encoderFlag
