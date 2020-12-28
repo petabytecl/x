@@ -40,10 +40,9 @@ type istioProxy struct {
 	serverInfoAddress string
 	cancel            context.CancelFunc
 
-	serverQuitAddress string
-	client            *http.Client
-	retryDelay        time.Duration
-	maxWait           time.Duration
+	client     *http.Client
+	retryDelay time.Duration
+	maxWait    time.Duration
 
 	stopped <-chan struct{}
 	healthy bool
