@@ -29,6 +29,9 @@ type Logger interface {
 
 	// WithFields interface extensions
 	WithFields(fields map[string]interface{}) Logger
+
+	// WithError interface extensions
+	WithError(err error) Logger
 }
 
 type logger struct {
@@ -111,6 +114,13 @@ func appendLatency(b []byte, d time.Duration) []byte {
 func (l *logger) WithFields(fields map[string]interface{}) Logger {
 	return &logger{
 		logur: logur.WithFields(l.logur, fields),
+	}
+}
+
+// WithError pass fields to the inner logger
+func (l *logger) WithError(err error) Logger {
+	return &logger{
+		logur: logur.WithFields(l.logur, LogFields{"error": err.Error()}),
 	}
 }
 
