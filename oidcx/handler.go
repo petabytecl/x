@@ -36,8 +36,33 @@ func (p *Provider) NewOAuth2Handler(c *oauth2.Config) *OAuth2Handler {
 	}
 }
 
+type authError struct {
+	Name        string
+	Description string
+	Hint        string
+	Debug       string
+}
+
 func (h *OAuth2Handler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
+	if len(r.URL.Query().Get("error")) > 0 {
+		fmt.Printf("auth request error: %s, desc: %s, hint: %s, debug: %s\n",
+			r.URL.Query().Get("error"),
+			r.URL.Query().Get("error_description"),
+			r.URL.Query().Get("error_hint"),
+			r.URL.Query().Get("error_debug"),
+		)
+
+		w.WriteHeader(http.StatusInternalServerError)
+		_, _ = w.Write([]byte("auth request error"))
+		return
+	}
+
 	if r.URL.Query().Get("state") != h.state {
+		fmt.Printf("states do not match. expected %s, got %s\n",
+			h.state,
+			r.URL.Query().Get("state"),
+		)
+
 		w.WriteHeader(http.StatusInternalServerError)
 		_, _ = w.Write([]byte("invalid state"))
 		return
@@ -45,8 +70,9 @@ func (h *OAuth2Handler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 
 	oauth2Token, err := h.c.Exchange(r.Context(), r.URL.Query().Get("code"))
 	if err != nil {
-		w.WriteHeader(http.StatusInternalServerError)
 		fmt.Println(err.Error())
+
+		w.WriteHeader(http.StatusInternalServerError)
 		return
 	}
 
@@ -56,21 +82,21 @@ func (h *OAuth2Handler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 		if s == "openid" {
 			rawIDToken, ok := oauth2Token.Extra("id_token").(string)
 			if !ok {
+				fmt.Println("unable to read id_token")
 				w.WriteHeader(http.StatusInternalServerError)
-				fmt.Println(err.Error())
 				return
 			}
 
 			idToken, err := h.verifier.Verify(r.Context(), rawIDToken)
 			if err != nil {
-				w.WriteHeader(http.StatusInternalServerError)
 				fmt.Println(err.Error())
+				w.WriteHeader(http.StatusInternalServerError)
 				return
 			}
 
 			if idToken.Nonce != h.nonce {
-				w.WriteHeader(http.StatusInternalServerError)
 				fmt.Println(err.Error())
+				w.WriteHeader(http.StatusInternalServerError)
 				_, _ = w.Write([]byte("invalid nonce"))
 				return
 			}
@@ -79,8 +105,8 @@ func (h *OAuth2Handler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 
 			var idTokenClaims json.RawMessage
 			if err := idToken.Claims(&idTokenClaims); err != nil {
-				w.WriteHeader(http.StatusInternalServerError)
 				fmt.Println(err.Error())
+				w.WriteHeader(http.StatusInternalServerError)
 				return
 			}
 
@@ -89,8 +115,8 @@ func (h *OAuth2Handler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 			tokenSource := h.c.TokenSource(r.Context(), oauth2Token)
 			userInfo, err := h.p.UserInfo(r.Context(), tokenSource)
 			if err != nil {
-				w.WriteHeader(http.StatusInternalServerError)
 				fmt.Println(err.Error())
+				w.WriteHeader(http.StatusInternalServerError)
 				return
 			}
 
@@ -98,8 +124,8 @@ func (h *OAuth2Handler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 
 			var userInfoClaims json.RawMessage
 			if err := userInfo.Claims(&userInfoClaims); err != nil {
-				w.WriteHeader(http.StatusInternalServerError)
 				fmt.Println(err.Error())
+				w.WriteHeader(http.StatusInternalServerError)
 				return
 			}
 

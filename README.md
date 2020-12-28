@@ -57,7 +57,10 @@ func main() {
     ),
   )
 
-  fmt.Printf("%s\n", handler.AuthCodeURL())
+  authURLParams := []oauth2.AuthCodeOption{
+
+  }
+  fmt.Printf("%s\n", handler.AuthCodeURL(authURLParams))
 
   r := httprouter.New()
   r.Handler("GET", "/auth/google/callback", handler)
