@@ -1,11 +1,11 @@
 package logx
 
 import (
-	"flag"
 	"io"
 	"os"
 	"time"
 
+	"github.com/spf13/pflag"
 	"go.uber.org/zap"
 	"go.uber.org/zap/zapcore"
 )
@@ -44,7 +44,7 @@ type Opts func(*Options)
 //  log-level:  Zap Level to configure the verbosity of logging. Can be one of 'debug', 'info', 'error',
 //			       or any integer value > 0 which corresponds to custom debug levels of increasing verbosity")
 //  stacktrace-level: Zap Level at and above which stacktraces are captured (one of 'warn' or 'error')
-func (o *Options) BindFlags(fs *flag.FlagSet) {
+func (o *Options) BindFlags(fs *pflag.FlagSet) {
 
 	// Set Development mode value
 	// fs.BoolVar(&o.Development, "zap-devel", false,
