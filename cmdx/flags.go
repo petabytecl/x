@@ -10,5 +10,4 @@ func RegisterConfigFlag(fs *flag.FlagSet, defaultPath string) {
 // RegisterDebugFlag registers the --debug / -d flag.
 func RegisterDebugFlag(fs *flag.FlagSet) {
 	fs.BoolP("debug", "d", false, "Enable debug mode")
-	_ = fs.MarkHidden("debug")
 }
