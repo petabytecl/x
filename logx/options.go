@@ -40,31 +40,31 @@ type Opts func(*Options)
 // BindFlags will parse the given flagset for zap option flags and set the log options accordingly
 //  zap-devel: Development Mode defaults(encoder=consoleEncoder,logLevel=Debug,stackTraceLevel=Warn)
 //			  Production Mode defaults(encoder=jsonEncoder,logLevel=Info,stackTraceLevel=Error)
-//  zap-encoder: Zap log encoding ('json' or 'console')
-//  zap-log-level:  Zap Level to configure the verbosity of logging. Can be one of 'debug', 'info', 'error',
+//  log-encoder: Zap log encoding ('json' or 'console')
+//  log-level:  Zap Level to configure the verbosity of logging. Can be one of 'debug', 'info', 'error',
 //			       or any integer value > 0 which corresponds to custom debug levels of increasing verbosity")
-//  zap-stacktrace-level: Zap Level at and above which stacktraces are captured (one of 'warn' or 'error')
+//  stacktrace-level: Zap Level at and above which stacktraces are captured (one of 'warn' or 'error')
 func (o *Options) BindFlags(fs *flag.FlagSet) {
 
 	// Set Development mode value
-	fs.BoolVar(&o.Development, "zap-devel", false,
-		"Development Mode defaults(encoder=consoleEncoder,logLevel=Debug,stackTraceLevel=Warn). "+
-			"Production Mode defaults(encoder=jsonEncoder,logLevel=Info,stackTraceLevel=Error)")
+	// fs.BoolVar(&o.Development, "zap-devel", false,
+	// 	"Development Mode defaults(encoder=consoleEncoder,logLevel=Debug,stackTraceLevel=Warn). "+
+	// 		"Production Mode defaults(encoder=jsonEncoder,logLevel=Info,stackTraceLevel=Error)")
 
 	// Set Encoder value
 	var encVal encoderFlag
 	encVal.setFunc = func(fromFlag zapcore.Encoder) {
 		o.Encoder = fromFlag
 	}
-	fs.Var(&encVal, "zap-encoder", "Zap log encoding ('json' or 'console')")
+	fs.Var(&encVal, "log-encoder", "Log encoding ('json' or 'console')")
 
 	// Set the Log Level
 	var levelVal levelFlag
 	levelVal.setFunc = func(fromFlag zapcore.LevelEnabler) {
 		o.Level = fromFlag
 	}
-	fs.Var(&levelVal, "zap-log-level",
-		"Zap Level to configure the verbosity of logging. Can be one of 'debug', 'info', 'error', "+
+	fs.Var(&levelVal, "log-level",
+		"Log level to configure the verbosity of logging. Can be one of 'debug', 'info', 'error', "+
 			"or any integer value > 0 which corresponds to custom debug levels of increasing verbosity")
 
 	// Set the StrackTrace Level
@@ -72,8 +72,8 @@ func (o *Options) BindFlags(fs *flag.FlagSet) {
 	stackVal.setFunc = func(fromFlag zapcore.LevelEnabler) {
 		o.StacktraceLevel = fromFlag
 	}
-	fs.Var(&stackVal, "zap-stacktrace-level",
-		"Zap Level at and above which stacktraces are captured (one of 'warn' or 'error')")
+	fs.Var(&stackVal, "stacktrace-level",
+		"Log level at and above which stacktraces are captured (one of 'warn' or 'error')")
 }
 
 // UseFlagOptions configures the logger to use the Options set by parsing zap option flags from the CLI.
