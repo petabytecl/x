@@ -48,6 +48,7 @@ func (o *Options) BindFlags(fs *pflag.FlagSet) {
 
 	// Set Development mode value
 	fs.BoolVar(&o.Development, "debug", false, "Enable debug mode")
+	_ = fs.MarkHidden("debug")
 
 	// Set Encoder value
 	var encVal encoderFlag
