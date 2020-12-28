@@ -12,11 +12,8 @@ import (
 
 var levelStrings = map[string]zapcore.Level{
 	"debug":  zap.DebugLevel,
-	"-1":     zap.DebugLevel,
 	"info":   zap.InfoLevel,
-	"0":      zap.InfoLevel,
 	"error":  zap.ErrorLevel,
-	"2":      zap.ErrorLevel,
 	"dpanic": zap.DPanicLevel,
 	"panic":  zap.PanicLevel,
 	"warn":   zap.WarnLevel,

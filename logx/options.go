@@ -64,7 +64,7 @@ func (o *Options) BindFlags(fs *pflag.FlagSet) {
 	}
 	fs.Var(&levelVal, "log-level",
 		"Log level to configure the verbosity of logging. Can be one of 'debug', 'info', 'error', "+
-			"or any integer value > 0 which corresponds to custom debug levels of increasing verbosity")
+			"'dpanic', 'panic', 'warn', 'fatal'")
 
 	// Set the StrackTrace Level
 	var stackVal stackTraceFlag
